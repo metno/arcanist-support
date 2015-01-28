@@ -9,11 +9,13 @@
 phutil_register_library_map(array(
   '__library_version__' => 2,
   'class' => array(
+    'ArcanistFoodcriticLinter' => 'linters/ArcanistFoodcriticLinter.php',
     'ArcanistScalastyleLinter' => 'linters/ArcanistScalastyleLinter.php',
     'SBTTestEngine' => 'unit/SBTTestEngine.php',
   ),
   'function' => array(),
   'xmap' => array(
+    'ArcanistFoodcriticLinter' => 'ArcanistExternalLinter',
     'ArcanistScalastyleLinter' => 'ArcanistExternalLinter',
     'SBTTestEngine' => 'ArcanistUnitTestEngine',
   ),

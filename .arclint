@@ -1,7 +1,8 @@
 {
   "exclude": [
-    "(^externals/)",
-    "(\\.lint-test$)"
+    "(^legacy/)",
+    "(\\.project$)",
+    "(\\.phutil_module_cache$)"
   ],
   "linters": {
     "chmod": {
@@ -10,63 +11,50 @@
     "filename": {
       "type": "filename"
     },
-    "generated": {
-      "type": "generated"
-    },
     "json": {
       "type": "json",
       "include": [
-        "(^resources/arclint/.*\\.arclint\\.example$)",
+        "(^examples/.*\\.arcconfig\\.example$)",
+        "(^examples/.*\\.arclint\\.example$)",
         "(^\\.arcconfig$)",
         "(^\\.arclint$)",
         "(\\.json$)"
       ]
     },
-    "merge-conflict": {
-      "type": "merge-conflict"
+    "generated": {
+      "type": "generated"
     },
     "nolint": {
       "type": "nolint"
     },
-    "phutil-library": {
-      "type": "phutil-library",
+    "php": {
+      "type": "php",
       "include": "(\\.php$)"
     },
-    "phutil-xhpast": {
-      "type": "phutil-xhpast",
-      "include": "(\\.php$)"
+    "phpcs": {
+      "type": "phpcs",
+      "flags": [
+        ""
+      ],
+      "include": "(\\.php)",
+      "severity.rules": {
+        "(PHPCS.E.PEAR.WhiteSpace.ScopeIndent.Incorrect)": "disabled",
+        "(PHPCS.W.Generic.Files.LineLength.TooLong)": "disabled",
+        "(PHPCS.E.PEAR.Commenting.FileComment.Missing)": "disabled",
+        "(PHPCS.E.PEAR.Commenting.ClassComment.Missing)": "disabled",
+        "(PHPCS.E.PEAR.Commenting.FunctionComment.Missing)": "disabled",
+        "(^PHPCS\\.E\\.)": "warning",
+        "(^PHPCS\\.W\\.)": "advice"
+      }
     },
     "spelling": {
-      "type": "spelling",
-      "exclude": "(^resources/spelling/.*\\.json$)"
+      "type": "spelling"
     },
     "text": {
       "type": "text",
-      "exclude": [
-        "(^\\.arclint$)"
-      ]
-    },
-    "text-without-length": {
-      "type": "text",
       "severity": {
         "3": "disabled"
-      },
-      "include": [
-        "(^\\.arclint$)"
-      ]
-    },
-    "xhpast": {
-      "type": "xhpast",
-      "include": "(\\.php$)",
-      "severity": {
-        "16": "advice",
-        "34": "error"
-      },
-      "xhpast.blacklisted.function": {
-        "eval": "The eval() function should be avoided. It is potentially unsafe and makes debugging more difficult."
-      },
-      "xhpast.php-version": "5.2.3",
-      "xhpast.php-version.windows": "5.3.0"
+      }
     }
   }
 }
