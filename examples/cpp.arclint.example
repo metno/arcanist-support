@@ -1,0 +1,60 @@
+{
+  "exclude": [
+    "(^legacy/)",
+    "(\\.project$)"
+  ],
+  "linters": {
+    "chmod": {
+      "type": "chmod"
+    },
+    "filename": {
+      "type": "filename"
+    },
+    "generated": {
+      "type": "generated"
+    },
+    "json": {
+      "type": "json",
+      "include": [
+        "(^\\.arcconfig$)",
+        "(^\\.arclint$)",
+        "(\\.json$)"
+      ]
+    },
+    "nolint": {
+      "type": "nolint"
+    },
+    "spelling": {
+      "type": "spelling"
+    },
+    "text": {
+      "type": "text",
+      "severity": {
+        "3": "disabled",
+        "5": "advice"
+      }
+    },
+    "xml": {
+      "type": "xml",
+      "include": [
+        "(\\.xml$)"
+      ]
+    },
+    "ccpcheck": {
+      "type": "cppcheck",
+      "include": [
+        "(\\.cpp$)",
+        "(\\.h$)",
+        "(\\.hpp$)"
+      ]
+    },
+    "ccplint": {
+      "type": "cpplint",
+      "include": [
+        "(\\.cpp$)",
+        "(\\.h$)",
+        "(\\.hpp$)"
+      ]
+    }
+  }
+}

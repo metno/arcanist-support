@@ -1,0 +1,50 @@
+{
+  "exclude": [
+    "(^public/swagger.*/)",
+    "(^legacy/)",
+    "(\\.project$)"
+  ],
+  "linters": {
+    "chmod": {
+      "type": "chmod"
+    },
+    "filename": {
+      "type": "filename"
+    },
+    "generated": {
+      "type": "generated"
+    },
+    "nolint": {
+      "type": "nolint"
+    },
+    "spelling": {
+      "type": "spelling"
+    },
+    "text": {
+      "type": "text",
+      "severity": {
+        "3": "disabled",
+        "5": "advice"
+      }
+    },
+    "json": {
+      "type": "json",
+      "include": [
+        "(^\\.arcconfig$)",
+        "(^\\.arclint$)",
+        "(\\.json$)"
+      ]
+    },
+    "xml": {
+      "type": "xml",
+      "include": [
+        "(\\.xml$)"
+      ]
+    },
+    "scalastyle": {
+      "type": "scalastyle",
+      "jar": "scalastyle_2.11-0.6.0-batch.jar",
+      "config": "scalastyle-config.xml"
+    }
+  }
+}

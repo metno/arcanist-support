@@ -1,0 +1,50 @@
+{
+  "exclude": [
+    "(^legacy/)",
+    "(\\.project$)"
+  ],
+  "linters": {
+    "chmod": {
+      "type": "chmod"
+    },
+    "filename": {
+      "type": "filename"
+    },
+    "generated": {
+      "type": "generated"
+    },
+    "json": {
+      "type": "json",
+      "include": [
+        "(^\\.arcconfig$)",
+        "(^\\.arclint$)",
+        "(\\.json$)"
+      ]
+    },
+    "nolint": {
+      "type": "nolint"
+    },
+    "spelling": {
+      "type": "spelling"
+    },
+    "text": {
+      "type": "text",
+      "severity": {
+        "3": "disabled",
+        "5": "advice"
+      }
+    },
+    "ruby": {
+      "type": "ruby",
+      "include": "(\\.rb$)"
+    },
+    "foodcritic": {
+      "type": "foodcritic",
+      "exclude": [
+        "(^test/)",
+        "(^\\.arcconfig$)",
+        "(^\\.arclint$)"
+      ]
+    }
+  }
+}
