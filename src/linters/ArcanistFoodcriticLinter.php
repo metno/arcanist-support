@@ -36,14 +36,6 @@ final class ArcanistFoodcriticLinter extends ArcanistExternalLinter
       $keys = preg_split("/[:]+/", $line);
       $lintMessage->setCode(trim($keys[0]));
       $lintMessage->setName("Foodcritic");
-      // Handling for https://github.com/acrmp/foodcritic/issues/233
-      if ($lintMessage->getCode() == "FC009") {
-        $lintMessage->setSeverity(ArcanistLintSeverity::SEVERITY_ADVICE);
-        $lintMessage->setDescription(trim($keys[1]) . ". This rule generates false positives. See https://github.com/acrmp/foodcritic/issues/233");
-      } else {
-        $lintMessage->setSeverity(ArcanistLintSeverity::SEVERITY_WARNING);
-        $lintMessage->setDescription(trim($keys[1]));
-      }
       $lintMessage->setPath(trim($keys[2]));
       $lintMessage->setLine(trim($keys[3]));
 
