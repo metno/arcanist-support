@@ -22,11 +22,11 @@ final class ArcanistScalastyleLinter extends ArcanistExternalLinter {
   }
 
   public function getDefaultBinary() {
-    return 'java';
+    return 'scalastyle';
   }
 
   public function getInstallInstructions() {
-    return 'See http://www.scalastyle.org/command-line.html';
+    return 'Install debian package scalastyle-0.6, or get it from https://github.com/metno/scalastyle';
   }
 
   public function shouldExpectCommandErrors() {
@@ -34,17 +34,12 @@ final class ArcanistScalastyleLinter extends ArcanistExternalLinter {
   }
 
   protected function getMandatoryFlags() {
-    if ($this->jarPath === null) {
-      throw new ArcanistUsageException(
-        pht('Scalastyle JAR path must be configured.'));
-    }
     if ($this->configPath === null) {
       throw new ArcanistUsageException(
         pht('Scalastyle config XML path must be configured.'));
     }
 
     return array(
-      '-jar', $this->jarPath,
       '--config', $this->configPath,
       '--quiet', 'true');
   }
@@ -110,12 +105,6 @@ final class ArcanistScalastyleLinter extends ArcanistExternalLinter {
 
   public function getLinterConfigurationOptions() {
     $options = array(
-      'jar' => array(
-        'type' => 'optional string | list<string>',
-        'help' => pht(
-          'Specify a string (or list of strings) identifying the Scalastyle '.
-          'JAR file.')
-      ),
       'config' => array(
         'type' => 'optional string | list<string>',
         'help' => pht(
@@ -129,27 +118,6 @@ final class ArcanistScalastyleLinter extends ArcanistExternalLinter {
 
   public function setLinterConfigurationValue($key, $value) {
     switch ($key) {
-      case 'jar':
-        $working_copy = $this->getEngine()->getWorkingCopy();
-        $root = $working_copy->getProjectRoot();
-
-        foreach ((array)$value as $path) {
-          if (Filesystem::pathExists($path)) {
-            $this->jarPath = $path;
-            return;
-          }
-
-          $path = Filesystem::resolvePath($path, $root);
-
-          if (Filesystem::pathExists($path)) {
-            $this->jarPath = $path;
-            return;
-          }
-        }
-
-        throw new ArcanistUsageException(
-          pht('None of the configured Scalastyle JARs can be located.'));
-
       case 'config':
         $working_copy = $this->getEngine()->getWorkingCopy();
         $root = $working_copy->getProjectRoot();
@@ -169,7 +137,8 @@ final class ArcanistScalastyleLinter extends ArcanistExternalLinter {
         }
 
         throw new ArcanistUsageException(
-          pht('None of the configured Scalastyle configs can be located.'));
+            pht('None of the configured Scalastyle configs can be located. If you have the met.no\'s scalastyle package installed, you may change scalastyle config to /etc/scalastyle-config.xml in .arclint')
+        );
     }
 
     return parent::setLinterConfigurationValue($key, $value);

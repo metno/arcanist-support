@@ -45,7 +45,8 @@ Add the following code to .arclint to use foodcritic.
 
 ### src/linters/ArcanistScalastyleLinter.php
 
-Arcanist hooks for ScalaStyle. This allows `arc lint` to run the ScalaStyle linter on Scala code.
+Arcanist hooks for ScalaStyle. This allows `arc lint` to run the ScalaStyle linter on Scala code. Note that you need access to scalastyle to make this work. See
+https://github.com/metno/scalastyle for a way to do this.
 
 ## Unit Testers
 
