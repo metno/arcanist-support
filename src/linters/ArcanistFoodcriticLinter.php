@@ -18,6 +18,20 @@ final class ArcanistFoodcriticLinter extends ArcanistExternalLinter
     return false;
   }
 
+  protected function getMandatoryFlags()
+  {
+    // Excludes three rules that cause false positives with Arcanist, because
+    // of the way arc applies the linter
+    // - FC011  "Missing README in markdown format"
+    // - FC031  "Cookbook without metadata file"
+    // - FC045  "Consider setting cookbook name in metadata"
+    return array(
+      '-t ~FC011',
+      '-t ~FC031',
+      '-t ~FC045'
+    );
+  }
+
   protected function parseLinterOutput($path, $err, $stdout, $stderr)
   {
     $messages = array();
@@ -32,11 +46,16 @@ final class ArcanistFoodcriticLinter extends ArcanistExternalLinter
 
     foreach ($lines as $line) {
       $lintMessage = id(new ArcanistLintMessage())->setPath($path)->setCode($this->getLinterName());
+      // Everything gets set to warning as default
+      $lintMessage->setSeverity(ArcanistLintSeverity::SEVERITY_WARNING);
 
       $keys = preg_split("/[:]+/", $line);
-      $lintMessage->setCode(trim($keys[0]));
+      $code = trim($keys[0]);
+      $lintMessage->setCode($code);
       $lintMessage->setName("Foodcritic");
-      $lintMessage->setPath(trim($keys[2]));
+      $lintMessage->setDescription(trim($keys[1]));
+      $path = trim($keys[2]);
+      $lintMessage->setPath($path);
       $lintMessage->setLine(trim($keys[3]));
 
       $messages[] = $lintMessage;
