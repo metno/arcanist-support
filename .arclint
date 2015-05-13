@@ -43,6 +43,7 @@
         "(PHPCS.E.PEAR.Commenting.FileComment.Missing)": "disabled",
         "(PHPCS.E.PEAR.Commenting.ClassComment.Missing)": "disabled",
         "(PHPCS.E.PEAR.Commenting.FunctionComment.Missing)": "disabled",
+        "(PHPCS.E.PEAR.NamingConventions.ValidFunctionName.PrivateNoUnderscore)": "disabled",
         "(^PHPCS\\.E\\.)": "warning",
         "(^PHPCS\\.W\\.)": "advice"
       }
