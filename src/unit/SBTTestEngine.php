@@ -12,9 +12,7 @@ final class SBTTestEngine extends ArcanistUnitTestEngine
   protected function loadEnvironment()
   {
     $this->projectRoot = $this->getWorkingCopy()->getProjectRoot();
-    // $this->sbtCommand = 'sbt -Dsbt.log.noformat=true test';
     $this->sbtCommand = 'sbt test';
-    $this->reportDir = $this->projectRoot . '/target/test-reports';
     $reportDirs = $this->getConfigurationManager()->getConfigFromAnySource('unit.engine.sbt.report-dirs');
 
     if (is_null($this->reportDirs)) {
