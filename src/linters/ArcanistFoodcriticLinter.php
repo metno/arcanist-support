@@ -46,8 +46,6 @@ final class ArcanistFoodcriticLinter extends ArcanistExternalLinter
 
     foreach ($lines as $line) {
       $lintMessage = id(new ArcanistLintMessage())->setPath($path)->setCode($this->getLinterName());
-      // Everything gets set to warning as default
-      $lintMessage->setSeverity(ArcanistLintSeverity::SEVERITY_WARNING);
 
       $keys = preg_split("/[:]+/", $line);
       $code = trim($keys[0]);
@@ -56,12 +54,17 @@ final class ArcanistFoodcriticLinter extends ArcanistExternalLinter
       $lintMessage->setDescription(trim($keys[1]));
       $path = trim($keys[2]);
       $lintMessage->setPath($path);
-      $lintMessage->setLine(trim($keys[3]));
+      $lintMessage->setLine(intval(trim($keys[3])));
+      $lintMessage->setSeverity($this->getLintMessageSeverity($code));
 
       $messages[] = $lintMessage;
     }
 
     return $messages;
+  }
+
+  protected function getDefaultMessageSeverity($code) {
+    return ArcanistLintSeverity::SEVERITY_WARNING;
   }
 
   public function getInfoURI()
