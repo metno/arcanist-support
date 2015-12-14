@@ -11,51 +11,42 @@
     "filename": {
       "type": "filename"
     },
+    "generated": {
+      "type": "generated"
+    },
     "json": {
       "type": "json",
       "include": [
-        "(^examples/.*\\.arcconfig\\.example$)",
-        "(^examples/.*\\.arclint\\.example$)",
+        "(^resources/arclint/.*\\.arclint\\.example$)",
         "(^\\.arcconfig$)",
         "(^\\.arclint$)",
         "(\\.json$)"
       ]
     },
-    "generated": {
-      "type": "generated"
+    "merge-conflict": {
+      "type": "merge-conflict"
     },
     "nolint": {
       "type": "nolint"
     },
-    "php": {
-      "type": "php",
+    "phutil-library": {
+      "type": "phutil-library",
       "include": "(\\.php$)"
     },
-    "phpcs": {
-      "type": "phpcs",
-      "flags": [
-        ""
-      ],
-      "include": "(\\.php)",
-      "severity.rules": {
-        "(PHPCS.E.PEAR.WhiteSpace.ScopeIndent.Incorrect)": "disabled",
-        "(PHPCS.W.Generic.Files.LineLength.TooLong)": "disabled",
-        "(PHPCS.E.PEAR.Commenting.FileComment.Missing)": "disabled",
-        "(PHPCS.E.PEAR.Commenting.ClassComment.Missing)": "disabled",
-        "(PHPCS.E.PEAR.Commenting.FunctionComment.Missing)": "disabled",
-        "(PHPCS.E.PEAR.NamingConventions.ValidFunctionName.PrivateNoUnderscore)": "disabled",
-        "(^PHPCS\\.E\\.)": "warning",
-        "(^PHPCS\\.W\\.)": "advice"
-      }
-    },
     "spelling": {
-      "type": "spelling"
+      "type": "spelling",
+      "exclude": "(^resources/spelling/.*\\.json$)"
     },
     "text": {
       "type": "text",
       "severity": {
         "3": "disabled"
       }
+    },
+    "xhpast": {
+      "type": "xhpast",
+      "include": "(\\.php$)",
+      "standard": "phutil.xhpast"
     }
   }
 }

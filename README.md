@@ -10,6 +10,8 @@ We recommend installing metno/arcanist-support to your workspace directory (i.e.
 
 To use the scripts, modify your PATH env so that it accesses <ABSOLUTE-PATH-TO-ARCANIST-SUPPORT>/bin/
 
+If you do this, then it can also be an idea to install stand-alone linters (e.g., cpplint) to the same directory.
+
 To use the linters defined in arcanist-support, configure your arcanist environment. This can be done in the .arcconfig of each project, but we recommend setting this up globally. Either manually edit your .arcrc file, or run the following command:
 
     $ arc set-config load '["<ABSOLUTE-PATH-TO-ARCANIST-SUPPORT>/src/"]'
@@ -34,7 +36,7 @@ Simple implementation of arcanist hooks for Foodcritic. This allows `arc lint` t
 
 Note that there are a number of limitations in how foodcritic interacts with arcanist. Most notably, foodcritic is primarily
 designed to run on the entire cookbook rather than individual files; this can cause some errors (so far observed on test files.
-To minimize false positives, exclude the test directory from linting with foodcritic.
+To minimize false positives, exclude the test directory from linting with foodcritic).
 
 Add the following code to .arclint to use foodcritic.
 
@@ -42,6 +44,13 @@ Add the following code to .arclint to use foodcritic.
        "type": "foodcritic",
        "exclude": "(^test/)"
     }
+
+### src/linters/ArcanistGoogleCppLinter.php
+
+Fixes https://secure.phabricator.com/T8404 in the Arcanist linter. This allows for using cpplint.py to lint C and C++ files.
+
+Note that you need cpplint.py installed in your path to get this to work. The linter itself can be downloaded from
+https://github.com/google/styleguide/tree/gh-pages/cpplint
 
 ### src/linters/ArcanistScalastyleLinter.php
 
@@ -64,5 +73,4 @@ The PHP code formatter should use the PSR-2 style, with 2-space indents.
 
 ### Arcanist Linting
 
-To lint this project, you will need PHP_CodeSniffer installed. On Ubuntu, ensure that you have the php-pear package installed, and then run:
-```sudo pear install PHP_CodeSniffer```
+For linting on Php we attempt to stay consistent with the Phabricator project's codestyle.
