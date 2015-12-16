@@ -1,0 +1,27 @@
+#!/bin/sh
+SCRIPT_USAGE="Usage: $0 [OPTION]
+
+This script cleans up git repositories after using arcanist; specifically, it
+deletes all arcpatch-* branches in the repository. Git will throw a fatal
+error if there are not patch branches.
+
+Options:
+
+--help             display this help and exit
+"
+
+# Parse command line
+while test -n "$1"; do
+    case "$1" in
+    --help)
+        echo "$SCRIPT_USAGE"; exit 0;;
+    *)
+        echo "Invalid option. Use --help to see options."; exit 1;;
+    esac
+done
+
+# Switch to master
+git checkout master
+
+# Clean up
+git branch -D `git for-each-ref --format="%(refname:short)" refs/heads/arcpatch-\*`

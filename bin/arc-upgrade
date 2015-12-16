@@ -1,0 +1,61 @@
+#!/bin/bash
+set -e
+
+ABSOLUTE_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)/`basename "${BASH_SOURCE[0]}"`
+BIN_DIR=`dirname $ABSOLUTE_PATH`
+INSTALL_DIR=`dirname $BIN_DIR`
+PHP_DIR="$INSTALL_DIR/include/php"
+
+HELP_TEXT="Usage: $0 [OPTION]
+
+This script upgrades arcanist and MET's arcanist-support library. It grabs the
+installation directory from the script path. Current installation directory is
+assumed to be:
+
+    $INSTALL_DIR
+
+If arcanist has been installed manually, you will need to specify the directories
+individually.
+
+Options:
+
+--help             display this help and exit
+"
+
+# Parse command line
+while test -n "$1"; do
+    case "$1" in
+    --help)
+        echo "$HELP_TEXT"; exit 0;;
+    *)
+        echo "Invalid option. Use --help to see options."; exit 1;;
+    esac
+done
+
+# Start Installation
+echo "---- arcanist upgrading ----"
+
+echo -n "Upgrading arcanist in... "
+echo $INSTALL_DIR
+
+if [ ! -w "$PHP_DIR/libphutil" ]; then
+    echo "No permission to write to ${PHP_DIR}. Re-run with sudo, or check the permissions on the folder."
+    exit -1
+fi;
+if [ ! -w "$PHP_DIR/arcanist" ]; then
+    echo "No permission to write to ${PHP_DIR}. Re-run with sudo, or check the permissions on the folder."
+    exit -1
+fi;
+
+# Upgrade arcanist
+echo "Upgrading arcanist... "
+$BIN_DIR/arc upgrade
+echo "Done"
+
+# Upgrade metno/arcanist_support
+echo "Upgrading metno/arcanist-support... "
+cd "$PHP_DIR/arcanist-support" && git pull origin master
+echo "Done"
+
+echo "---- arcanist upgrade completed ----"
+exit 0

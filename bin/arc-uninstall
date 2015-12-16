@@ -1,0 +1,112 @@
+#!/bin/bash
+set -e
+
+ABSOLUTE_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)/`basename "${BASH_SOURCE[0]}"`
+BIN_DIR=`dirname $ABSOLUTE_PATH`
+INSTALL_DIR=`dirname $BIN_DIR`
+PHP_DIR="$INSTALL_DIR/include/php"
+
+HELP_TEXT="Usage: $0 [OPTION]
+
+This script uninstalls arcanist and MET's arcanist-support library. It grabs the
+installation directory from the script path. Current installation directory is
+assumed to be:
+
+    $INSTALL_DIR
+
+If arcanist has been installed elsewhere, you will need to specify the
+directories individually.
+
+Options:
+
+-i DIR, --install-dir=DIR
+                   uninstall from the directory <DIR>
+
+-f, --force
+                   Do not request confirmation
+
+--help             display this help and exit
+"
+
+# Parse command line
+while test -n "$1"; do
+    case "$1" in
+    --help)
+        echo "$HELP_TEXT"; exit 0;;
+    --install-dir=*)
+        INSTALL_DIR=`echo $1 | sed 's/--install-dir=//'`
+        shift
+        continue;;
+    -i)
+        shift
+        INSTALL_DIR=$1
+        shift
+        continue;;
+    -f)
+        FORCE=true
+        shift
+        continue;;
+    --force)
+        FORCE=true
+        shift
+        continue;;
+    *)
+        echo "Invalid option. Use --help to see options."; exit 1;;
+    esac
+done
+
+BIN_DIR="$INSTALL_DIR/bin"
+PHP_DIR="$INSTALL_DIR/include/php"
+
+# Start Uninstall
+echo "---- uninstalling arcanist ----"
+
+echo -n "Uninstalling arcanist from... "
+echo $INSTALL_DIR
+
+if [ -z "$FORCE" ]; then
+    read -r -p "Are you sure? [y/N]... " response
+    case $response in
+        [yY][eE][sS]|[yY])
+            ;;
+        *)
+            echo "---- arcanist upgrade aborted ----"
+            exit 0
+            ;;
+    esac
+fi;
+
+if [ ! -w "$PHP_DIR/libphutil" ]; then
+    echo "No permission to write to ${PHP_DIR}. Re-run with sudo, or check the permissions on the folder."
+    exit -1
+fi;
+if [ ! -w "$PHP_DIR/arcanist" ]; then
+    echo "No permission to write to ${PHP_DIR}. Re-run with sudo, or check the permissions on the folder."
+    exit -1
+fi;
+
+# Delete metno/arcanist-support
+echo -n "Deleting MET arcanist-support... "
+rm -rf $PHP_DIR/arcanist-support
+echo "done"
+
+# Delete arcanist
+echo -n "Deleting libphutil... "
+rm -rf $PHP_DIR/libphutil
+echo "done"
+echo -n "Deleting arcanist... "
+rm -rf $PHP_DIR/arcanist
+echo "done"
+
+# Deleting executables
+echo -n "Deleting arcanist executables... "
+rm -f $BIN_DIR/arc
+rm -f $BIN_DIR/arc-clean
+rm -f $BIN_DIR/arc-install
+rm -f $BIN_DIR/arc-uninstall
+rm -f $BIN_DIR/arc-upgrade
+echo "done"
+
+echo "---- arcanist upgrade completed ----"
+
+exit 0

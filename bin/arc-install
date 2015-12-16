@@ -1,0 +1,118 @@
+#!/bin/bash
+set -e
+
+INSTALL_DIR="/usr/local"
+
+HELP_TEXT="Usage: $0 [OPTION]
+
+This script installs arcanist and MET's arcanist-support library. It
+downloads arcanist and libphutil and installs them (default to /usr/local).
+In addition, it downloads metno/arcanist-support, and links the scripts in
+the library into <install_dir>/bin.
+
+Set your PATH to include <install_dir>/bin.
+
+Options:
+
+-i DIR, --install-dir=INSTALL_DIR
+                   install to the directory <INSTALL_DIR>
+
+--help             display this help and exit
+"
+
+# Parse command line
+while test -n "$1"; do
+    case "$1" in
+    --help)
+        echo "$HELP_TEXT"; exit 0;;
+    --install-dir=*)
+        INSTALL_DIR=`echo $1 | sed 's/--install-dir=//'`
+        shift
+        continue;;
+    -i)
+        shift
+        INSTALL_DIR=$1
+        shift
+        continue;;
+    *)
+        echo "Invalid option. Use --help to see options."; exit 1;;
+    esac
+done
+
+# Start Installation
+echo "---- arcanist installation ----"
+
+echo -n "Installing into... "
+echo $INSTALL_DIR
+
+BIN_DIR="$INSTALL_DIR/bin"
+PHP_DIR="$INSTALL_DIR/include/php"
+
+# Check dependencies
+echo -n "Checking dependencies of arcanist... "
+hash git 2>/dev/null || { echo >&2 "git not found"; echo "arc-install requires git to install. Aborting"; exit 1; }
+hash php 2>/dev/null || { echo >&2 "php not found"; echo "arcanist requires php to run. Aborting"; exit 1; }
+echo "ok"
+
+if [ ! -d "$INSTALL_DIR" ]; then
+    echo "The directory ${INSTALL_DIR} does not exist. You must create the directory before installing metno/arcanist-support."
+    exit -1
+fi;
+if [ ! -w "$INSTALL_DIR" ]; then
+    echo "You do not have permission to install to ${INSTALL_DIR}. Re-run with sudo, or check the permissions on the folder (note: ${INSTALL_DIR} must exist before installation)."
+    exit -1
+fi;
+if [ ! -e "$BIN_DIR" ]; then
+    mkdir -p $BIN_DIR
+fi;
+if [ ! -e "$PHP_DIR" ]; then
+    mkdir -p $PHP_DIR
+fi;
+
+# Install arcanist
+echo "Installing arcanist... "
+if [ -e "$PHP_DIR/libphutil" ]; then
+    echo "libphutil has already been installed. Use arc-uninstall to remove or arc-upgrade to upgrade arcanist."
+    exit -1
+fi;
+if [ -e "$PHP_DIR/arcanist" ]; then
+    echo "arcanist has already been installed. Use arc-uninstall to remove or arc-upgrade to upgrade arcanist."
+    exit -1
+fi;
+git clone git://github.com/phacility/libphutil.git "$PHP_DIR/libphutil"
+git clone git://github.com/phacility/arcanist.git "$PHP_DIR/arcanist"
+echo "Done"
+
+# Install metno/arcanist_support
+echo "Installing metno/arcanist-support... "
+if [ -e "$PHP_DIR/arcanist-support" ]; then
+    echo "arcanist-support has already been installed. Use arc-uninstall to remove or arc-upgrade to upgrade arcanist."
+    exit -1
+fi;
+git clone git://github.com/metno/arcanist-support.git "$PHP_DIR/arcanist-support"
+echo "Done"
+
+# Install binaries
+echo -n "Linking arcanist executables... "
+
+## arc
+ln -fs "$PHP_DIR/arcanist/bin/arc" "$BIN_DIR/arc"
+
+# These need to wait for the files to be added to git before they can be uncommented
+
+## arc-clean
+ln -fs "$PHP_DIR/arcanist-support/bin/arc-clean" "$BIN_DIR/arc-clean"
+
+## arc-install
+ln -fs "$PHP_DIR/arcanist-support/bin/arc-install" "$BIN_DIR/arc-install"
+
+## arc-uninstall
+ln -fs "$PHP_DIR/arcanist-support/bin/arc-uninstall" "$BIN_DIR/arc-uninstall"
+
+## arc-upgrade
+ln -fs "$PHP_DIR/arcanist-support/bin/arc-upgrade" "$BIN_DIR/arc-upgrade"
+
+echo "done"
+
+echo "---- arcanist installation completed ----"
+exit 0
