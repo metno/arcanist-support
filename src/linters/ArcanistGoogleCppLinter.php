@@ -61,7 +61,7 @@ final class ArcanistGoogleCppLinter extends ArcanistExternalLinter {
   }
 
   protected function getLintCodeFromLinterConfigurationKey($code) {
-    if (!preg_match('@^[a-z_]+/[a-z_]+$@', $code)) {
+    if (!preg_match('@^[a-z_]+/[a-z0-9_+]+$@', $code)) {
       throw new Exception(
         pht(
           'Unrecognized lint message code "%s". Expected a valid cpplint '.
