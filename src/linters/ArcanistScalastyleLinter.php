@@ -62,7 +62,8 @@ final class ArcanistScalastyleLinter extends ArcanistExternalLinter {
     foreach ($lines as $line) {
       $lintMessage = id(new ArcanistLintMessage())
         ->setPath($path)
-        ->setCode($this->getLinterName());
+        ->setCode($this->getLinterName())
+        ->setName($this->getLinterName());
 
       $matches = array();
       if (preg_match('/^([a-z]+)/', $line, $matches)) {
