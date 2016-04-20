@@ -12,6 +12,7 @@ phutil_register_library_map(array(
     'ArcanistFoodcriticLinter' => 'linters/ArcanistFoodcriticLinter.php',
     'ArcanistGoogleCppLinter' => 'linters/ArcanistGoogleCppLinter.php',
     'ArcanistScalastyleLinter' => 'linters/ArcanistScalastyleLinter.php',
+    'PlayTestEngine' => 'unit/PlayTestEngine.php',
     'SBTTestEngine' => 'unit/SBTTestEngine.php',
   ),
   'function' => array(),
@@ -19,6 +20,7 @@ phutil_register_library_map(array(
     'ArcanistFoodcriticLinter' => 'ArcanistExternalLinter',
     'ArcanistGoogleCppLinter' => 'ArcanistExternalLinter',
     'ArcanistScalastyleLinter' => 'ArcanistExternalLinter',
+    'PlayTestEngine' => 'ArcanistUnitTestEngine',
     'SBTTestEngine' => 'ArcanistUnitTestEngine',
   ),
 ));
