@@ -40,7 +40,7 @@
         "(\\.xml$)"
       ]
     },
-    "ccpcheck": {
+    "cppcheck": {
       "type": "cppcheck",
       "include": [
         "(\\.cpp$)",
@@ -48,7 +48,7 @@
         "(\\.hpp$)"
       ]
     },
-    "ccplint": {
+    "cpplint": {
       "type": "cpplint",
       "include": [
         "(\\.cpp$)",
