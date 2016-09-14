@@ -41,7 +41,7 @@ final class ArcanistScalastyleLinter extends ArcanistExternalLinter {
 
     return array(
       '--config', $this->configPath,
-      '--quiet', 'true');
+      '--quiet', 'false');
   }
 
   protected function getDefaultFlags() {
@@ -98,7 +98,8 @@ final class ArcanistScalastyleLinter extends ArcanistExternalLinter {
         $lintMessage->setChar(trim($matches[1]));
       }
 
-      $messages[] = $lintMessage;
+      if ($lintMessage->getSeverity() != NULL)
+        $messages[] = $lintMessage;
     }
 
     return $messages;
