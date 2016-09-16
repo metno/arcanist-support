@@ -5,6 +5,9 @@
  */
 final class ArcanistGoogleCppLinter extends ArcanistExternalLinter {
 
+  private $max_line_length;
+  private $header_guard_root_dir;
+
   public function getLinterName() {
     return 'C++ cppLint - working version';
   }
@@ -15,6 +18,47 @@ final class ArcanistGoogleCppLinter extends ArcanistExternalLinter {
 
   public function getDefaultBinary() {
     return 'cpplint.py';
+  }
+
+  public function getDefaultFlags() {
+    $flags = array();
+    if (isset($this->max_line_length)) {
+      array_push($flags, '--linelength=' . $this->max_line_length);
+    }
+    if (isset($this->header_guard_root_dir)) {
+      array_push($flags, '--root=' . $this->header_guard_root_dir);
+    }
+    return $flags;
+  }
+
+  public function getLinterConfigurationOptions() {
+    $options = array(
+      'cpplint.max_line_length' => array(
+        'type' => 'optional int',
+        'help' => pht('Maximum line length'),
+      ),
+      'cpplint.header_guard_root_dir' => array(
+        'type' => 'optional string',
+        'help' => pht('Root directory for determining correct define guards')
+      )
+    );
+
+    return $options + parent::getLinterConfigurationOptions();
+  }
+
+  public function setLinterConfigurationValue($key, $value) {
+    switch ($key) {
+      case 'cpplint.max_line_length':
+        $this->max_line_length = $value;
+        return;
+
+      case 'cpplint.header_guard_root_dir':
+        $this->header_guard_root_dir = $value;
+        return;
+
+      default:
+        return parent::setLinterConfigurationValue($key, $value);
+    }
   }
 
   public function getInstallInstructions() {
